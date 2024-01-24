@@ -10,7 +10,6 @@ import datetime
 import re
 
 @csrf_exempt
-
 # REGISTER - FUNCIONA
 def formulario_registro(request):
 	if request.method!='POST':
