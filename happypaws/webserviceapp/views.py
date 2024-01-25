@@ -9,8 +9,8 @@ import jwt
 import datetime
 import re
 
+#REGISTER - FUNCIONA
 @csrf_exempt
-# REGISTER - FUNCIONA
 def formulario_registro(request):
 	if request.method!='POST':
 		return None
@@ -66,39 +66,38 @@ def formulario_registro(request):
 		print(str(e))
 		return JsonResponse({"Error":f"Error de registro de usuario: {str(e)}"}, status=500)
 
-
 #LOG-IN
-#def inicio_sesion(request):
-#        if request.method!='POST':
-#                return None
+@csrf_exempt
+def inicio_sesion(request):
+	if request.method!='POST':
+		return None
 
-#	token_csrf = get_token(request) # ?????
+	json_peticion = json.loads(request.body)
+	correo = json_peticion['ingresar_correo'] #variables
+	contrasena =json_peticion['ingresar_contrasena']
 
-#        json_peticion = json.loads(request.body)
-#        correo = json_peticion['ingresar_correo']
-#        contrasena =json_peticion['ingresar_contrasena']
+        #Comprobación campos no vacíos
+	if correo == '' or contrasena == '':
+		 return JsonResponse({"Bad Request":"Faltan parametros"}, status = 400)
 
-        #comprobación campos no vacíos
-#        if correo == '' or contrasena == '':
-#                return JsonResponse({"Bad Request":"Faltan parametros"}, status = 400)
+        #Comprobación correo está registrado
+	try:
+		usuario = Tusuarios.objects.get(correo=correo)
+	except Tusuarios.DoesNotExist:
+		return JsonResponse({"Unauthorized":"El correo proporcionado no esta registrado"}, status = 401)
 
-        #comprobación correo está registrado
-#        try:
-#                usuario = Tusuarios.objects.get(correo=correo)
-#        except Tusuarios.DoesNotExist:
-#                return JsonResponse({"Not Found":"El correo proporcionado no esta registrado"}, status = 404) #comentar con rubén
 
-        #comprobación la contraseña es correcta
-#        if not check_password(contrasena, usuario.contrasena):
-#                return JsonResponse({'Bad request':'La contrasena no es valida'}, status = 401)
+	#Generar token
+	def generar_jwt_token():
+		payload = {
+			'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1), # Token expira >
+			'iat': datetime.datetime.utcnow(),
+		}
+		token = jwt.encode(payload, 'gatitosfelices123', algorithm='HS256')
+		return token
 
-        #generar token (inicio de sesión????)
-#        def generar_jwt_token():
-#                payload = {
-#                        'exp': datetime.datetime.utcnow() + datetime.timedelta(days=1), # Token expira en 1 día
-#                        'iat': datetime.datetime.utcnow(),
-#                }
-#                token = jwt.encode(payload, 'gatitosfelices123', algorithm='HS256')
-
-#                return token
-#        return JsonResponse({"OK":"Sesion iniciada con exito"}, status = 200 ) #dejar así?
+	#Comprobación la contraseña es correcta
+	if check_password(contrasena, usuario.contrasena): #si la contraseña es correcta, se genera el token, pero solo es correcta si la contraseña de la tabla está hasheada
+		return JsonResponse({"OK":"Sesion iniciada con exito", "token": generar_jwt_token()}, status = 200)
+	else:
+		return JsonResponse({'Unauthorized':'La contrasena no es valida'}, status = 401)
