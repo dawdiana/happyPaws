@@ -20,10 +20,14 @@ from webserviceapp import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('animales', views.pagAcogida),
-    path('test', views.pagina_de_prueba),
+   # path('test', views.pagina_de_prueba),
 #ENCONTRAREMOS LOS ANIMALES MEDIANTE LA ID ASIGNADA
     path('animales/<int:id_solicitado>', views.pagInfAnimales_solicitado),
-    path('logout/', views.cerrar_sesion)
+    path('logout/', views.cerrar_sesion),
+    path('productos', views.pagProductos),
+    path('productos/<int:id_solicitado>', views.pagInfProducto_solicitado),
+    path('noticias', views.pagNoticias)
+
 
 
 ]
