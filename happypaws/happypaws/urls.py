@@ -16,7 +16,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
 from webserviceapp import views
 
 urlpatterns = [
@@ -25,4 +24,13 @@ urlpatterns = [
     path('usuarios/login/', views.inicio_sesion),
     path('usuarios/<int:id>/editar_perfil/', views.editar_perfil),
     path('usuarios/logout/', views.logout),
+    path('admin/', admin.site.urls),
+    path('animales', views.pagAcogida),
+   # path('test', views.pagina_de_prueba),
+#ENCONTRAREMOS LOS ANIMALES MEDIANTE LA ID ASIGNADA
+    path('animales/<int:id_solicitado>', views.pagInfAnimales_solicitado),
+    path('productos', views.pagProductos),
+    path('productos/<int:id_solicitado>', views.pagInfProducto_solicitado),
+    path('noticias', views.pagNoticias),
 ]
+
