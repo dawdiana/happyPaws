@@ -185,7 +185,7 @@ def editar_perfil(request, id): #request se refiere a la información sobre la s
 # LOG-OUT - FUNCIONA
 @csrf_exempt
 def logout(request):
-	#Comprobamos que el usuario tenga un token
+	Comprobamos que el usuario tenga un token
 	error_response, payload = verify_token(request)
 	if error_response:
 		return error_response
