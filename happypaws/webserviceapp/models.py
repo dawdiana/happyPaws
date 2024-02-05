@@ -167,8 +167,9 @@ class Tusuarios(models.Model):
     ap1 = models.CharField(max_length=25, blank=True, null=True)
     ap2 = models.CharField(max_length=25, blank=True, null=True)
     correo = models.CharField(max_length=50, blank=True, null=True)
-    nombreusuario = models.CharField(db_column='nombreUsuario', max_length=20, blank=True, null=True)  # Field name made lowercase.
+    nombreusuario = models.CharField(db_column='nombreUsuario', max_length=30)  # Field name made lowercase.
     contrasena = models.CharField(max_length=150)
+    token = models.CharField(max_length=500, blank=True, null=True)
 
     class Meta:
         managed = False
