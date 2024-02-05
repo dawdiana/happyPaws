@@ -181,3 +181,22 @@ def editar_perfil(request, id): #request se refiere a la información sobre la s
 		return JsonResponse({'Created': 'Datos actualizados correctamente'}, status = 201)
 	except Tusuarios.DoesNotExist:
 		return JsonResponse({'Not found':'Usuario no encontrado'}, status = 404)
+
+# LOG-OUT - FUNCIONA
+@csrf_exempt
+def logout(request):
+	Comprobamos que el usuario tenga un token
+	error_response, payload = verify_token(request)
+	if error_response:
+		return error_response
+	if request.method !='POST':
+		return JsonResponse({'error': 'Método no permitido'}, status = 405)
+	try:
+		usuario = Tusuarios.objects.get(pk=payload['id'])
+		usuario.token = None #si el usuario es identificado correctamente, se vacía su token
+		usuario.save()
+
+		return JsonResponse({'OK': 'La sesion terminada con exito'}, status = 200)
+
+	except Tusuarios.DoesNotExist:
+		return JsonResponse({'Not found': 'Usuario no encontraado'}, status = 404)
