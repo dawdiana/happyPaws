@@ -1,20 +1,16 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.views.decorators.csrf import csrf_exempt
-from .models import Tusuarios, Tanimales, Tproductos, Tnocitias
+from .models import Tusuarios, Tanimales, Tproductos, Tnoticias
 from django.contrib.auth.hashers import make_password, check_password
 import json
 import jwt
 import datetime
 import re
-<<<<<<< HEAD
-=======
-
->>>>>>> e5a71ba8f2424689193bfe08b81eafaea2c5bbb5
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import requires_csrf_token
 
-#REGISTER - FUNCIONA
+#REGISTER - FUNIONA
 @csrf_exempt
 def formulario_registro(request):
 	if request.method!='POST':
@@ -207,10 +203,6 @@ def logout(request):
 	except Tusuarios.DoesNotExist:
 		return JsonResponse({'Not found': 'Usuario no encontraado'}, status = 404)
 
-# Función de prueba para verificar si la aplicación funciona correctamente en el navegador
-#def pagina_de_prueba(request):
- #   return HttpResponse("<h1>Hola wey</hq>")
-
 # Vista que muestra el listado de animales de acogida con sus ID, nombres e URLs de imagen
 def pagAcogida(request):
     try:
@@ -233,7 +225,6 @@ def pagAcogida(request):
         return JsonResponse(mensaje_error, status=404, json_dumps_params={'ensure_ascii': False})
 
 
-#--------------------------------------------------------------------------------------------------------------
 # Vista que muestra información detallada sobre un animal específico solicitado por su ID
 def pagInfAnimales_solicitado(request, id_solicitado):
     try:
@@ -259,7 +250,6 @@ def pagInfAnimales_solicitado(request, id_solicitado):
         mensaje_error = {'status': 'Error', 'error': '404 No se encontró el animal con dicha id'}
         return JsonResponse(mensaje_error, status=404, json_dumps_params={'ensure_ascii': False})
 
-#-----------------------------------------------------------------------------------------------------------------------------
 def pagProductos(request):
     try:
         lista = Tproductos.objects.all()
