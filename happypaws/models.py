@@ -17,7 +17,6 @@ class AuthGroup(models.Model):
 
 
 class AuthGroupPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
     permission = models.ForeignKey('AuthPermission', models.DO_NOTHING)
 
@@ -28,9 +27,9 @@ class AuthGroupPermissions(models.Model):
 
 
 class AuthPermission(models.Model):
-    name = models.CharField(max_length=255)
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING)
     codename = models.CharField(max_length=100)
+    name = models.CharField(max_length=255)
 
     class Meta:
         managed = False
@@ -41,14 +40,14 @@ class AuthPermission(models.Model):
 class AuthUser(models.Model):
     password = models.CharField(max_length=128)
     last_login = models.DateTimeField(blank=True, null=True)
-    is_superuser = models.IntegerField()
+    is_superuser = models.BooleanField()
     username = models.CharField(unique=True, max_length=150)
-    first_name = models.CharField(max_length=150)
     last_name = models.CharField(max_length=150)
     email = models.CharField(max_length=254)
-    is_staff = models.IntegerField()
-    is_active = models.IntegerField()
+    is_staff = models.BooleanField()
+    is_active = models.BooleanField()
     date_joined = models.DateTimeField()
+    first_name = models.CharField(max_length=150)
 
     class Meta:
         managed = False
@@ -56,7 +55,6 @@ class AuthUser(models.Model):
 
 
 class AuthUserGroups(models.Model):
-    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     group = models.ForeignKey(AuthGroup, models.DO_NOTHING)
 
@@ -67,7 +65,6 @@ class AuthUserGroups(models.Model):
 
 
 class AuthUserUserPermissions(models.Model):
-    id = models.BigAutoField(primary_key=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
     permission = models.ForeignKey(AuthPermission, models.DO_NOTHING)
 
@@ -78,13 +75,13 @@ class AuthUserUserPermissions(models.Model):
 
 
 class DjangoAdminLog(models.Model):
-    action_time = models.DateTimeField()
     object_id = models.TextField(blank=True, null=True)
     object_repr = models.CharField(max_length=200)
     action_flag = models.PositiveSmallIntegerField()
     change_message = models.TextField()
     content_type = models.ForeignKey('DjangoContentType', models.DO_NOTHING, blank=True, null=True)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    action_time = models.DateTimeField()
 
     class Meta:
         managed = False
@@ -102,7 +99,6 @@ class DjangoContentType(models.Model):
 
 
 class DjangoMigrations(models.Model):
-    id = models.BigAutoField(primary_key=True)
     app = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     applied = models.DateTimeField()
@@ -120,57 +116,3 @@ class DjangoSession(models.Model):
     class Meta:
         managed = False
         db_table = 'django_session'
-
-
-class Tanimales(models.Model):
-    nombre = models.CharField(max_length=25, blank=True, null=True)
-    url_imagen = models.CharField(max_length=3000, blank=True, null=True)
-    edad = models.CharField(max_length=20, blank=True, null=True)
-    especie = models.CharField(max_length=20, blank=True, null=True)
-    raza = models.CharField(max_length=20, blank=True, null=True)
-    genero = models.CharField(max_length=15, blank=True, null=True)
-    descripcion = models.CharField(max_length=200, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tAnimales'
-
-
-class Tnoticias(models.Model):
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    tituloportada = models.CharField(db_column='tituloPortada', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    url_imagen = models.CharField(max_length=3000, blank=True, null=True)
-    info_noticia = models.CharField(max_length=1000, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tNoticias'
-
-
-class Tproductos(models.Model):
-    nombre = models.CharField(max_length=50, blank=True, null=True)
-    url_imagen = models.CharField(max_length=3000, blank=True, null=True)
-    precio = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True)
-    marca = models.CharField(max_length=25, blank=True, null=True)
-    stock = models.IntegerField(blank=True, null=True)
-    tipoproducto = models.CharField(db_column='tipoProducto', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    tipoanimal = models.CharField(db_column='tipoAnimal', max_length=30, blank=True, null=True)  # Field name made lowercase.
-    descripcion = models.CharField(max_length=300, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tProductos'
-
-
-class Tusuarios(models.Model):
-    nombre = models.CharField(max_length=20, blank=True, null=True)
-    ap1 = models.CharField(max_length=25, blank=True, null=True)
-    ap2 = models.CharField(max_length=25, blank=True, null=True)
-    correo = models.CharField(max_length=50, blank=True, null=True)
-    nombreusuario = models.CharField(db_column='nombreUsuario', max_length=30)  # Field name made lowercase.
-    contrasena = models.CharField(max_length=150)
-    token = models.CharField(max_length=500, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'tUsuarios'
