@@ -24,7 +24,6 @@ urlpatterns = [
     path('usuarios/login/', views.inicio_sesion),
     path('usuarios/<int:id>/editar_perfil/', views.editar_perfil),
     path('usuarios/logout/', views.logout),
-    path('admin/', admin.site.urls),
     path('animales', views.pagAcogida),
     path('animales/<int:id_solicitado>', views.pagInfAnimales_solicitado), #encontramos a los animales mediante la id asignada
     path('productos', views.pagProductos),

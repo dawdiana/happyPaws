@@ -10,7 +10,7 @@ import re
 from django.core.exceptions import ObjectDoesNotExist
 from django.views.decorators.csrf import requires_csrf_token
 
-#REGISTER - FUNIONA
+#REGISTER
 @csrf_exempt
 def formulario_registro(request):
 	if request.method!='POST':
@@ -20,7 +20,7 @@ def formulario_registro(request):
 	nombre = json_peticion['nuevo_nombre'] #variables
 	ap1 = json_peticion['nuevo_ap1']
 	ap2 = json_peticion['nuevo_ap2']
-	correo = json_peticion['nueva_correo']
+	correo = json_peticion['nuevo_correo']
 	nombreusuario = json_peticion['nuevo_nombreUsuario']
 	contrasena = json_peticion['nueva_contrasena']
 	conf_contrasena = json_peticion['confirmar_contrasena']
@@ -68,7 +68,7 @@ def formulario_registro(request):
 		return JsonResponse({"Error":f"Error de registro de usuario: {str(e)}"}, status=500)
 
 
-#LOG-IN - FUNCIONA
+#LOG-IN
 @csrf_exempt
 def inicio_sesion(request):
 	if request.method!='POST':
@@ -126,7 +126,7 @@ def verify_token(request):
 	except jwt.InvalidTokenError:
 		return JsonResponse({'error':'Token no válido!'}, status = 401), None
 
-# EDITAR PERFIL - FUNCIONA
+# EDITAR PERFIL
 @csrf_exempt
 def editar_perfil(request, id): #request se refiere a la información sobre la solicitud http
 	error_response, payload = verify_token(request)
@@ -184,7 +184,7 @@ def editar_perfil(request, id): #request se refiere a la información sobre la s
 	except Tusuarios.DoesNotExist:
 		return JsonResponse({'Not found':'Usuario no encontrado'}, status = 404)
 
-# LOG-OUT - FUNCIONA
+# LOG-OUT
 @csrf_exempt
 def logout(request):
 	#Comprobamos que el usuario tenga un token
